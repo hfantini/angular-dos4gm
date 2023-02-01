@@ -1,0 +1,20 @@
+.APP
+{
+    height: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-direction: column;
+
+    .MAIN
+    {
+        max-width: 992px;
+        margin-top: 2rem;
+
+        .MSDOS
+        {
+            width: 150px;
+            height: auto;
+        }
+    }
+}

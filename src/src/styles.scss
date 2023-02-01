@@ -1,0 +1,21 @@
+@import 'bootstrap/scss/bootstrap';
+
+@font-face 
+{
+    font-family: terminal;
+    src: url("assets/font/terminal.ttf");
+}
+
+html
+{  
+    height: 100%;
+}
+
+body
+{  
+    height: 100%;
+    color: white;
+    background-color: black;
+    font-family: 'terminal';
+}
+
