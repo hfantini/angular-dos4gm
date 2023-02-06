@@ -1,0 +1,48 @@
+name: DOS4GM_PIPELINE
+
+on:
+  push: 
+    branches: [ main ]
+  pull_request:
+    branches: [ main ]
+    
+jobs:
+
+  prepare:
+    runs-on: ubuntu-latest
+    
+    steps:
+      - uses: actions/checkout@v3
+    
+      - name: INSTALL NODEJS
+        run: apt-get update && apt-get install node -y
+        
+      - name: INSTALL PROJECT DEPEDENCIES
+        run: npm install  
+        
+  test:
+    needs: prepare
+    runs-on: ubuntu-latest
+    
+    steps:
+    - uses: actions/checkout@v3
+    
+    - name: TEST APPLICATION
+    - run: npm run test
+    
+  build:
+    needs: test
+    runs-on: ubuntu-latest
+    
+    steps:
+    - uses: actions/checkout@v3
+    
+    - name: DOCKER HUB LOGIN
+    - run: docker login -u ${{ vars.DOCKERHUB_USER }} -p ${{ secrets.DOCKERHUB_ACCESS_TOKEN }}
+    
+    - name: BUILD IMAGE
+      run: docker build -t hefantini/dos4gm .
+      
+    - name: PUSH IMAGE
+      run: docker push hefantni/dos4gm:latest
+      
