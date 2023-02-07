@@ -1,0 +1,12 @@
+version: '3.8'
+services:
+  dos4gm-http:
+    build: .
+    container_name: dosgm
+    networks:
+      - dos4gm-network
+    ports:
+      - "8080:8080"
+networks:
+  dos4gm-network:
+    driver: bridge
