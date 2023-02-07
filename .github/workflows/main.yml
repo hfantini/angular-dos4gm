@@ -46,10 +46,6 @@ jobs:
     steps:
     - uses: actions/checkout@v3
     
-    - name: TEST SECRETS
-      working-directory: ./src
-      run: echo ${{secrets.DOCKERHUB_USER}} && echo ${{secrets.DOCKERHUB_PASSWORD}}
-    
     - name: DOCKER HUB LOGIN
       uses: docker/login-action@v2
       with:
