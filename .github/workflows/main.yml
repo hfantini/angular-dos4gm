@@ -25,11 +25,9 @@ jobs:
           path: ~/.npm
           key: npm-${{ hashFiles('package-lock.json') }}
           restore-keys: npm-        
-      
-      - name: NAVIGATE INTO SRC DIRECTORY
-        run: cd src
-        
+              
       - name: INSTALL PROJECT DEPEDENCIES
+        working-directory: ./src
         run: npm ci --ignore-scripts ./src
         
   test:
@@ -40,6 +38,7 @@ jobs:
     - uses: actions/checkout@v3
     
     - name: TEST APPLICATION
+      working-directory: ./src
       run: npm run test
     
   build:
@@ -50,6 +49,7 @@ jobs:
     - uses: actions/checkout@v3
         
     - name: BUILD IMAGE
+      working-directory: ./src
       run: docker build -t hefantini/dos4gm .
       
   push:
@@ -63,5 +63,6 @@ jobs:
       run: docker login -u ${{ vars.DOCKERHUB_USER }} -p ${{ secrets.DOCKERHUB_ACCESS_TOKEN }}
       
     - name: DOCKER HUB PUSH
+      working-directory: ./src
       run: docker push hefantni/dos4gm:latest
       
