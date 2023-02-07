@@ -8,39 +8,32 @@ on:
     
 jobs:
 
-  prepare:
-    runs-on: ubuntu-latest
-    
-    steps:
-      - uses: actions/checkout@v3
-    
-      - name: USE NODEJS 18.12.0
-        uses: actions/setup-node@v3
-        with:
-          node-version: 18.12.0
-        
-      - name: CACHE NPM DEPENDENCIES
-        uses: actions/cache@v3
-        with:
-          path: ~/.npm
-          key: npm-cache
-              
-      - name: INSTALL PROJECT DEPEDENCIES
-        working-directory: ./src
-        run: npm ci --ignore-scripts ./src
-        
   test:
-    needs: prepare
     runs-on: ubuntu-latest
     
     steps:
     - uses: actions/checkout@v3
-    
+
+    - name: USE NODEJS 18.12.0
+      uses: actions/setup-node@v3
+      with:
+        node-version: 18.12.0
+
     - name: CACHE NPM DEPENDENCIES
       uses: actions/cache@v3
+      env:
+        cache-name: cache-node-modules
       with:
         path: ~/.npm
-        key: npm-cache
+        key: ${{ runner.os }}-build-${{ env.cache-name }}-${{ hashFiles('**/package-lock.json') }}
+        restore-keys: |
+          ${{ runner.os }}-build-${{ env.cache-name }}-
+          ${{ runner.os }}-build-
+          ${{ runner.os }}-
+
+    - name: INSTALL PROJECT DEPEDENCIES
+      working-directory: ./src
+      run: npm ci --ignore-scripts ./src
     
     - name: TEST APPLICATION
       working-directory: ./src
@@ -52,22 +45,14 @@ jobs:
     
     steps:
     - uses: actions/checkout@v3
+    
+    - name: DOCKER HUB LOGIN
+      run: docker login -u ${{ vars.DOCKERHUB_USER }} -p ${{ secrets.DOCKERHUB_ACCESS_TOKEN }}
         
     - name: BUILD IMAGE
       working-directory: ./src
       run: docker build -t hefantini/dos4gm .
       
-  push:
-    needs: build
-    runs-on: ubuntu-latest
-    
-    steps:
-    - uses: actions/checkout@v3     
-    
-    - name: DOCKER HUB LOGIN
-      run: docker login -u ${{ vars.DOCKERHUB_USER }} -p ${{ secrets.DOCKERHUB_ACCESS_TOKEN }}
-      
     - name: DOCKER HUB PUSH
       working-directory: ./src
-      run: docker push hefantni/dos4gm:latest
-      
+      run: docker push hefantni/dos4gm:latest      
