@@ -56,4 +56,4 @@ jobs:
       run: docker build -t hefantini/dos4gm .
       
     - name: DOCKER HUB PUSH
-      run: docker push hefantni/dos4gm:latest      
+      run: docker push hefantini/dos4gm:latest      
