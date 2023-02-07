@@ -53,9 +53,7 @@ jobs:
         password: ${{ secrets.DOCKERHUB_PASSWORD }}
         
     - name: BUILD IMAGE
-      working-directory: ./src
       run: docker build -t hefantini/dos4gm .
       
     - name: DOCKER HUB PUSH
-      working-directory: ./src
       run: docker push hefantni/dos4gm:latest      
