@@ -23,8 +23,7 @@ jobs:
         uses: actions/cache@v3
         with:
           path: ~/.npm
-          key: npm-${{ hashFiles('package-lock.json') }}
-          restore-keys: npm-        
+          key: npm-cache
               
       - name: INSTALL PROJECT DEPEDENCIES
         working-directory: ./src
@@ -36,6 +35,12 @@ jobs:
     
     steps:
     - uses: actions/checkout@v3
+    
+    - name: CACHE NPM DEPENDENCIES
+      uses: actions/cache@v3
+      with:
+        path: ~/.npm
+        key: npm-cache
     
     - name: TEST APPLICATION
       working-directory: ./src
