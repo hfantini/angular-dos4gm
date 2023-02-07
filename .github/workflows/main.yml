@@ -49,8 +49,8 @@ jobs:
     - name: DOCKER HUB LOGIN
       uses: docker/login-action@v2
       with:
-        username: ${{ vars.DOCKERHUB_USER }}
-        password: ${{ secrets.DOCKERHUB_ACCESS_TOKEN }}
+        username: ${{ secrets.DOCKERHUB_USER }}
+        password: ${{ secrets.DOCKERHUB_PASSWORD }}
         
     - name: BUILD IMAGE
       working-directory: ./src
