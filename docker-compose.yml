@@ -6,7 +6,7 @@ services:
     networks:
       - dos4gm-network
     ports:
-      - "8080:8080"
+      - "80:80"
 networks:
   dos4gm-network:
     driver: bridge
